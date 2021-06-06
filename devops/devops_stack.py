@@ -10,6 +10,8 @@ from aws_cdk import (core as cdk,
                      aws_sns_subscriptions as sub,
                      aws_cloudwatch as cloudwatch,
                      aws_cloudwatch_actions as cloudwatch_actions,
+                     aws_codebuild as codebuild,
+                     aws_codecommit as codecommit,
                      )
 
 # For consistency with other languages, `cdk` is the preferred import name for
@@ -17,6 +19,11 @@ from aws_cdk import (core as cdk,
 # with examples from the CDK Developer's Guide, which are in the process of
 # being updated to use `cdk`.  You may delete this import if you don't need it.
 
+aws_account="749211935990"
+mail="test@163.com"
+github_owner="wyifei"
+github_repository="Simplest-Spring-Boot-Hello-World"
+github_token="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"
 
 class DevopsStack(cdk.Stack):
 
@@ -31,6 +38,69 @@ class DevopsStack(cdk.Stack):
            'devpos',
            repository_name='devops',
         )  
+
+        #create iam role used by code build
+        execution_role = iam.Role(
+            self,
+            "codebuild-execution-role",
+            assumed_by=iam.ServicePrincipal('codebuild.amazonaws.com'),
+            role_name="codebuild-execution-role")
+
+        execution_role.add_to_policy(iam.PolicyStatement(
+            effect=iam.Effect.ALLOW,
+            resources=['*'],
+            actions=[
+                'codecommit:GitPull',
+                'logs:CreateLogGroup',
+                'logs:CreateLogStream',
+                'logs:PutLogEvents',
+                'codebuild:CreateReportGroup',
+                'codebuild:CreateReport',
+                'codebuild:UpdateReport',
+                'codebuild:BatchPutTestCases',
+                'codebuild:BatchPutCodeCoverages',
+                'ecr:BatchCheckLayerAvailability',
+                'ecr:CompleteLayerUpload',
+                'ecr:GetAuthorizationToken',
+                'ecr:InitiateLayerUpload',
+                'ecr:PutImage',
+                'ecr:UploadLayerPart',
+            ],
+        ))
+
+        #create code build
+        access_token = cdk.SecretValue.plain_text(github_token)
+        GitHubSourceCredentials=codebuild.GitHubSourceCredentials(self,"token", access_token=access_token)
+        git_hub_source = codebuild.Source.git_hub(
+                owner=github_owner,
+                repo=github_repository,
+                webhook=True, # optional, default: true if `webhookFilters` were provided, false otherwise
+                webhook_triggers_batch_build=False, # optional, default is false
+                webhook_filters=[
+                    codebuild.FilterGroup.in_event_of(codebuild.EventAction.PUSH).and_branch_is("master")
+                    ]
+                )
+        
+        codebuild.Project(self, "devops",
+                source=git_hub_source,
+                build_spec=codebuild.BuildSpec.from_source_filename(
+                filename='buildspec.yml'),
+                environment=codebuild.BuildEnvironment(
+                    build_image=codebuild.LinuxBuildImage. from_code_build_image_id("aws/codebuild/amazonlinux2-x86_64-standard:3.0"),
+                    privileged=True,
+                ),
+                environment_variables={
+                'AWS_DEFAULT_REGION': codebuild.BuildEnvironmentVariable(
+                    value='us-east-1'),
+                'AWS_ACCOUNT_ID': codebuild.BuildEnvironmentVariable(
+                    value=aws_account),
+                'IMAGE_TAG': codebuild.BuildEnvironmentVariable(
+                    value='latest'),
+                'IMAGE_REPO_NAME': codebuild.BuildEnvironmentVariable(
+                    value='devops'),
+                },
+                role=execution_role,
+                )
 
 
         #create ecs cluster
@@ -59,7 +129,7 @@ class DevopsStack(cdk.Stack):
 
         #create snd and email subscription
         my_topic = sns.Topic(self, "MyTopic")
-        my_topic.add_subscription(sub.EmailSubscription("wyifei@163.com"))
+        my_topic.add_subscription(sub.EmailSubscription(mail))
         
         #crete log group
         log_group = logs.LogGroup(
@@ -97,17 +167,15 @@ class DevopsStack(cdk.Stack):
             memory_limit_mib=2048,      # Default is 512
             desired_count=2,            # Default is 1
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
-                #image=ecs.ContainerImage.from_ecr_repository(repository=repository,tag='latest'),
-                image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
-                container_port=80,
+                image=ecs.ContainerImage.from_ecr_repository(repository=repository,tag='latest'),
+                #image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
+                container_port=8080,
                 execution_role=execution_role,
                 log_driver=ecs.LogDriver.aws_logs(stream_prefix="web_logs",log_group=log_group)
                 ),
             deployment_controller={"type": ecs.DeploymentControllerType.CODE_DEPLOY}, #aws codedeploy require the service deployment type to be blue/green
-            #ecs.DeploymentController(type=ecs.DeploymentControllerType.CODE_DEPLOY), #AWS CodeDeploy require the service deployment type should be blue/green
            )
-        target2 = elb.ApplicationTargetGroup(self, "TG2",target_type=elb.TargetType.IP,port=8080,vpc=load_balanced_fargate_service.cluster.vpc)
+        target2 = elb.ApplicationTargetGroup(self, "target2",target_type=elb.TargetType.IP,port=8080,vpc=load_balanced_fargate_service.cluster.vpc)
         listener=load_balanced_fargate_service.load_balancer.add_listener("Listener2",default_target_groups=[target2],port = 8080,)
 
-        #create 
 
