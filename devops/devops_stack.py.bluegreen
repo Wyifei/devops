@@ -12,8 +12,6 @@ from aws_cdk import (core as cdk,
                      aws_cloudwatch_actions as cloudwatch_actions,
                      aws_codebuild as codebuild,
                      aws_codecommit as codecommit,
-                     aws_codepipeline as codepipeline,
-                     aws_codepipeline_actions as codepipeline_actions
                      )
 
 # For consistency with other languages, `cdk` is the preferred import name for
@@ -23,9 +21,9 @@ from aws_cdk import (core as cdk,
 
 aws_account="754413189608"
 mail="test@163.com"
-github_owner="Wyifei"
+github_owner="wyifei"
 github_repository="Simplest-Spring-Boot-Hello-World"
-github_token="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"
+github_token="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"
 
 class DevopsStack(cdk.Stack):
 
@@ -70,20 +68,20 @@ class DevopsStack(cdk.Stack):
             ],
         ))
 
-
         #create code build
-        #access_token = cdk.SecretValue.plain_text(github_token)
-        #GitHubSourceCredentials=codebuild.GitHubSourceCredentials(self,"token", access_token=access_token)
+        access_token = cdk.SecretValue.plain_text(github_token)
+        GitHubSourceCredentials=codebuild.GitHubSourceCredentials(self,"token", access_token=access_token)
         git_hub_source = codebuild.Source.git_hub(
                 owner=github_owner,
                 repo=github_repository,
-                webhook=False, # optional, default: true if `webhookFilters` were provided, false otherwise
-                #webhook_filters=[
-                #    codebuild.FilterGroup.in_event_of(codebuild.EventAction.PUSH).and_branch_is("master")
-                #    ]
+                webhook=True, # optional, default: true if `webhookFilters` were provided, false otherwise
+                webhook_triggers_batch_build=False, # optional, default is false
+                webhook_filters=[
+                    codebuild.FilterGroup.in_event_of(codebuild.EventAction.PUSH).and_branch_is("master")
+                    ]
                 )
-
-        project=codebuild.Project(self, "devops",
+        
+        codebuild.Project(self, "devops",
                 source=git_hub_source,
                 build_spec=codebuild.BuildSpec.from_source_filename(
                 filename='buildspec.yml'),
@@ -170,77 +168,14 @@ class DevopsStack(cdk.Stack):
             desired_count=2,            # Default is 1
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=ecs.ContainerImage.from_ecr_repository(repository=repository,tag='latest'),
+                #image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
                 container_port=8080,
                 execution_role=execution_role,
                 log_driver=ecs.LogDriver.aws_logs(stream_prefix="web_logs",log_group=log_group)
                 ),
-            #deployment_controller={"type": ecs.DeploymentControllerType.CODE_DEPLOY}, #aws codedeploy require the service deployment type to be blue/green
+            deployment_controller={"type": ecs.DeploymentControllerType.CODE_DEPLOY}, #aws codedeploy require the service deployment type to be blue/green
            )
-        #create codepipine
-        source_output = codepipeline.Artifact()
-        build_output  = codepipeline.Artifact()
-        source_action = codepipeline_actions.GitHubSourceAction(
-                action_name="GitHub_Source",
-                owner=github_owner,
-                repo=github_repository,
-                output=source_output,
-                #oauth_token=cdk.SecretValue.secrets_manager("/my/github/token"),
-                oauth_token=cdk.SecretValue.plain_text(github_token),
-                branch="master",
-                trigger=codepipeline_actions.GitHubTrigger["WEBHOOK"]
-                )
-        build_action = codepipeline_actions.CodeBuildAction(
-                action_name="CodeBuild",
-                project=project,
-                input=source_output,
-                outputs=[build_output],
-                )
-        manual_approval_action = codepipeline_actions.ManualApprovalAction(
-                action_name="Approve",
-                )
-        deploy_action = codepipeline_actions.EcsDeployAction(
-                action_name="DeployAction",
-                service=load_balanced_fargate_service.service,
-                #input=build_output,
-                image_file=build_output.at_path("imagedefinitions.json"),
-        )
-
-        pipeline = codepipeline.Pipeline(self, "MyFirstPipeline",cross_account_keys=False,
-                stages=[
-                    codepipeline.StageProps(
-                        stage_name='Source',
-                        actions=[source_action]
-                        ),
-                    codepipeline.StageProps(
-                        stage_name='CodeBuild',
-                        actions=[build_action]
-                        ),
-                    codepipeline.StageProps(
-                        stage_name='Approve',
-                        actions=[manual_approval_action]
-                        ),
-                    codepipeline.StageProps(
-                        stage_name='Deploy',
-                        actions=[deploy_action]
-                        ),
-                    #{
-                    #"stage_name": "Source",
-                    #"actions": [source_action]
-                    #},
-                    #{
-                    #"stage_name": "Build",
-                    #"actions": [build_action]
-                    #},
-                    #{
-                    #"stage_name": "Approve",
-                    #"actions": [manual_approval_action]
-                    #},
-                    #{
-                    #"stage_name": "Deploy",
-                    #"actions": [deploy_action]
-                    #},
-                    ],
-                )
-
+        target2 = elb.ApplicationTargetGroup(self, "target2",target_type=elb.TargetType.IP,port=8080,vpc=load_balanced_fargate_service.cluster.vpc)
+        listener=load_balanced_fargate_service.load_balancer.add_listener("Listener2",default_target_groups=[target2],port = 8080,)
 
 
