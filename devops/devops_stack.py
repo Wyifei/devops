@@ -11,26 +11,23 @@ from aws_cdk import (core as cdk,
                      aws_cloudwatch as cloudwatch,
                      aws_cloudwatch_actions as cloudwatch_actions,
                      aws_codebuild as codebuild,
-                     aws_codecommit as codecommit,
                      aws_codepipeline as codepipeline,
                      aws_codepipeline_actions as codepipeline_actions
                      )
 
-# For consistency with other languages, `cdk` is the preferred import name for
-# the CDK's core module.  The following line also imports it as `core` for use
-# with examples from the CDK Developer's Guide, which are in the process of
-# being updated to use `cdk`.  You may delete this import if you don't need it.
+#modify below variable correspondly
 
-aws_account="754413189608"
+aws_account="732507633146"
 mail="test@163.com"
-github_owner="Wyifei"
+github_owner="Wyifei"  #case-sensitive
 github_repository="Simplest-Spring-Boot-Hello-World"
-github_token="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"
+github_token="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"
 
 class DevopsStack(cdk.Stack):
 
     def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
+        
         #default is all AZs in region
         vpc = ec2.Vpc(self, "MyVpc", max_azs=2)     # default is all AZs in region
         
@@ -78,9 +75,6 @@ class DevopsStack(cdk.Stack):
                 owner=github_owner,
                 repo=github_repository,
                 webhook=False, # optional, default: true if `webhookFilters` were provided, false otherwise
-                #webhook_filters=[
-                #    codebuild.FilterGroup.in_event_of(codebuild.EventAction.PUSH).and_branch_is("master")
-                #    ]
                 )
 
         project=codebuild.Project(self, "devops",
@@ -162,7 +156,8 @@ class DevopsStack(cdk.Stack):
             )
 
         alarm.add_alarm_action(cloudwatch_actions.SnsAction(my_topic))
-        #create ecs service,loadbalancer
+        
+        #create ecs service and loadbalancer
         load_balanced_fargate_service=ecs_patterns.ApplicationLoadBalancedFargateService(self, "MyFargateService",
             cluster=cluster,            # Required
             cpu=512,                    # Default is 256
@@ -174,8 +169,8 @@ class DevopsStack(cdk.Stack):
                 execution_role=execution_role,
                 log_driver=ecs.LogDriver.aws_logs(stream_prefix="web_logs",log_group=log_group)
                 ),
-            #deployment_controller={"type": ecs.DeploymentControllerType.CODE_DEPLOY}, #aws codedeploy require the service deployment type to be blue/green
            )
+        
         #create codepipine
         source_output = codepipeline.Artifact()
         build_output  = codepipeline.Artifact()
@@ -201,7 +196,6 @@ class DevopsStack(cdk.Stack):
         deploy_action = codepipeline_actions.EcsDeployAction(
                 action_name="DeployAction",
                 service=load_balanced_fargate_service.service,
-                #input=build_output,
                 image_file=build_output.at_path("imagedefinitions.json"),
         )
 
@@ -223,24 +217,11 @@ class DevopsStack(cdk.Stack):
                         stage_name='Deploy',
                         actions=[deploy_action]
                         ),
-                    #{
-                    #"stage_name": "Source",
-                    #"actions": [source_action]
-                    #},
-                    #{
-                    #"stage_name": "Build",
-                    #"actions": [build_action]
-                    #},
-                    #{
-                    #"stage_name": "Approve",
-                    #"actions": [manual_approval_action]
-                    #},
-                    #{
-                    #"stage_name": "Deploy",
-                    #"actions": [deploy_action]
-                    #},
                     ],
                 )
 
-
-
+        cdk.CfnOutput(
+            self, "ECR_Uri",
+            description="ECR repository uri",
+            value=repository.repository_uri
+        )
