@@ -1,0 +1,20 @@
+#nmp_format_ver:1.0.0
+---
+- targets:
+  - https://114.255.167.243/ACS/api/ServiceUser/CheckUserStatus
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'ACS'
+    g_service: ''
+    c_zone: 'central'
+
+- targets:
+  - https://223.71.41.198/acs/
+  labels:
+    g_environment: 'cons'
+    g_bizservice: 'ACS'
+    g_service: ''
+    c_zone: 'central'
+
+#-EOF-
+

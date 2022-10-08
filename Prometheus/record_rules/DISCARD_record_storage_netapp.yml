@@ -1,0 +1,27 @@
+#nmp_format_ver:1.0.0
+---
+groups:
+#==============================================================================#
+- name: group_storage_netapp_sharefolder
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_netapp_sharefolder_state
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_state, "g_bizservice", "Storage-NetApp", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_netapp_sharefolder_size_total_bytes
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_size_total_bytes, "g_bizservice", "Storage-NetApp", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_netapp_sharefolder_size_available_bytes
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_size_available_bytes, "g_bizservice", "Storage-NetApp", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_netapp_sharefolder_inode_total
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_inode_total, "g_bizservice", "Storage-NetApp", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_netapp_sharefolder_inode_used
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_inode_used, "g_bizservice", "Storage-NetApp", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_netapp_sharefolder_size_used_ratio
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_size_used_ratio, "g_bizservice", "Storage-NetApp", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+#==============================================================================#
+#-EOF-
+

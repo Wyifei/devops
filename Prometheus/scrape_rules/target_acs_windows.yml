@@ -1,0 +1,36 @@
+#nmp_format_ver:1.0.0
+---
+- targets:
+  - fscnbesa2220m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'cons'
+    g_bizservice: 'ACS'
+    g_service: 'backend'
+    c_zone: 'DMZ2'
+
+- targets:
+  - fscnbesa2228m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'ACS'
+    g_service: 'backend'
+    c_zone: 'DMZ2'
+
+- targets:
+  - fscnbesa1111m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'cons'
+    g_bizservice: 'ACS'
+    g_service: 'frontend'
+    c_zone: 'DMZ1'
+
+- targets:
+  - fscnbesa1110m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'ACS'
+    g_service: 'frontend'
+    c_zone: 'DMZ1'
+
+#-EOF-
+

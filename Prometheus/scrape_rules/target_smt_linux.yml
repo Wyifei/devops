@@ -1,0 +1,84 @@
+#nmp_format_ver:1.0.0
+---
+- targets:
+  - beul0133m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'SMT'
+    g_service: 'App'
+    c_zone: 'DMZ2'
+
+- targets:
+  - beul0134m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'SMT'
+    g_service: 'App'
+    c_zone: 'DMZ2'
+
+- targets:
+  - beul0135m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'SMT'
+    g_service: 'other'
+    c_zone: 'DMZ2'
+
+- targets:
+  - beul0136m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'SMT'
+    g_service: 'Filesystem'
+    c_zone: 'DMZ2'
+
+- targets:
+  - beul0158m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'SMT'
+    g_service: 'Nginx'
+    c_zone: 'DMZ1'
+
+- targets:
+  - beul0159m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'SMT'
+    g_service: 'other'
+    c_zone: 'DMZ1'
+
+- targets:
+  - beul0160m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'cons'
+    g_bizservice: 'SMT'
+    g_service: 'Nginx'
+    c_zone: 'DMZ1'
+
+- targets:
+  - beul0150m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'cons'
+    g_bizservice: 'SMT'
+    g_service: 'App'
+    c_zone: 'DMZ2'
+
+- targets:
+  - beul0151m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'cons'
+    g_bizservice: 'SMT'
+    g_service: 'Filesystem'
+    c_zone: 'DMZ2'
+
+- targets:
+  - beul0153m.fs86.vwf.vwfs-ad:9999
+  labels:
+    g_environment: 'dev'
+    g_bizservice: 'SMT'
+    g_service: 'dev'
+    c_zone: 'DMZ2'
+
+#-EOF-
+

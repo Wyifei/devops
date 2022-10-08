@@ -1,0 +1,75 @@
+#nmp_format_ver:1.0.0
+---
+groups:
+#===============================================================================
+- name: alert_smt_prod_server
+  rules:
+  #-----------------------------------------------------------------------------
+  - alert: SMT_PROD_Server_CPU_Usage_High
+    expr: record_os_cpu_node_cpu_utilisation_2min{g_bizservice="SMT",g_environment="prod"} > 90
+    for: 10m
+    labels:
+      g_app_managers: "Wang, Yifei(CN); Xia, Leping (CN)"
+      g_duty_team: "it-ops-ams"
+      g_severity: "level 3"
+      g_generator: "prometheus"
+    annotations:
+      summary: "{{ $labels.g_bizservice }}@{{ $labels.g_environment }}: Windows Server CPU Usage High ({{ $labels.instance }} | {{ $value }}%)"
+      description: "SMT Server CPU Usage is more than 90%\n  VALUE = {{ $value }}%\n  LABELS: {{ $labels }}"
+  #-----------------------------------------------------------------------------
+  - alert: SMT_PROD_Server_Memory_Usage_High
+    expr: record_os_mem_node_mem_utilisation{g_bizservice="SMT",g_environment="prod"} > 90
+    for: 10m
+    labels:
+      g_app_managers: "Wang, Yifei(CN); Xia, Leping (CN)"
+      g_duty_team: "it-ops-ams"
+      g_severity: "level 3"
+      g_generator: "prometheus"
+    annotations:
+      summary: "{{ $labels.g_bizservice }}@{{ $labels.g_environment }}: Windows Server Memory Usage High ({{ $labels.instance }} | {{ $value }}%)"
+      description: "SMT Server Memory Usage is more than 90%\n  VALUE = {{ $value }}%\n  LABELS: {{ $labels }}"
+  #-----------------------------------------------------------------------------
+  - alert: SMT_PROD_Server_Disk_Space_Usage_High
+    expr: record_os_hdd_node_hdd_partition_usage{g_bizservice="SMT",g_environment="prod"} > 95
+    for: 10m
+    labels:
+      g_app_managers: "Wang, Yifei(CN); Xia, Leping (CN)"
+      g_duty_team: "it-ops-ams"
+      g_severity: "level 3"
+      g_generator: "prometheus"
+    annotations:
+      summary: "{{ $labels.g_bizservice }}@{{ $labels.g_environment }}: Windows Server Disk Space Usage High ({{ $labels.instance }} | {{ $labels.volume }} | {{ $value }}%)"
+      description: "SMT Server Disk Space Usage is more than 95% on Drive {{ $labels.volume }}\n  VALUE = {{ $value }}%\n  LABELS: {{ $labels }}"
+#===============================================================================
+- name: alert_smt_prod_url
+  rules:
+  #-----------------------------------------------------------------------------
+  - alert: SMT_DMZ1_PROD_Portal_Down
+    expr: count without(job) (probe_success{g_bizservice="SMT",g_environment="prod",job=~".*proxy.*"} == 1) == 0
+    for: 10m
+    labels:
+      g_app_managers: "Wang, Yifei(CN); Xia, Leping (CN)"
+      g_duty_team: "it-ops-ams"
+      g_severity: "level 2"
+      g_generator: "prometheus"
+    annotations:
+      summary: "{{ $labels.g_bizservice }}@{{ $labels.g_environment }}: URL unreachable ({{ $labels.c_http }})"
+      description: "SMT DMZ1 Production Portal {{ $labels.c_http }} down"
+#===============================================================================
+- name: alert_smt_prod_service
+  rules:
+  #-----------------------------------------------------------------------------
+  - alert: SMT_Prod_Service_Down
+    expr: node_systemd_unit_state{g_bizservice="SMT",g_environment="prod",name=~"tomcat.service|nginx.service",state="active"} == 0
+    for: 10m
+    labels:
+      g_app_managers: "Wang, Yifei(CN); Xia, Leping (CN)"
+      g_duty_team: "it-ops-ams"
+      g_severity: "level 3"
+      g_generator: "prometheus"
+    annotations:
+      summary: "{{ $labels.g_bizservice }}@{{ $labels.g_environment }}: Service Down ({{ $labels.name }}@{{ $labels.instance }})"
+      description: "SMT Service {{ $labels.name }} on instance {{ $labels.instance }} has down."
+#===============================================================================
+#-EOF-
+

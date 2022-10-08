@@ -1,0 +1,38 @@
+#nmp_format_ver:1.0.0
+---
+groups:
+#==============================================================================#
+- name: group_kvm
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_kvm_host_hardware_info
+    expr: label_replace(label_replace(label_replace(kvm_host_hardware_info, "g_bizservice", "KVM", "g_bizservice",".*"), "g_service", "KVM", "g_service", ".*"), "g_environment", "prod", "g_environment", ".*")
+  #-----------------------------------------------------------------------------
+  - record: record_kvm_host_cpu_core_max
+    expr: label_replace(label_replace(label_replace(kvm_host_cpu_core_max, "g_bizservice", "KVM", "g_bizservice",".*"), "g_service", "KVM", "g_service", ".*"), "g_environment", "prod", "g_environment", ".*")
+  #-----------------------------------------------------------------------------
+  - record: record_kvm_host_memory_max
+    expr: label_replace(label_replace(label_replace(kvm_host_memory_max, "g_bizservice", "KVM", "g_bizservice",".*"), "g_service", "KVM", "g_service", ".*"), "g_environment", "prod", "g_environment", ".*")
+  #-----------------------------------------------------------------------------
+  - record: record_kvm_host_hdd_size_max
+    expr: label_replace(label_replace(label_replace(kvm_host_hdd_size_max, "g_bizservice", "KVM", "g_bizservice",".*"), "g_service", "KVM", "g_service", ".*"), "g_environment", "prod", "g_environment", ".*")
+  #-----------------------------------------------------------------------------
+  - record: record_kvm_host_vm_count
+    expr: label_replace(label_replace(label_replace(kvm_host_vm_count, "g_bizservice", "KVM", "g_bizservice",".*"), "g_service", "KVM", "g_service", ".*"), "g_environment", "prod", "g_environment", ".*")
+  #-----------------------------------------------------------------------------
+  - record: record_kvm_host_vm_cpu_core_used
+    expr: label_replace(label_replace(label_replace(kvm_host_vm_cpu_core_used, "g_bizservice", "KVM", "g_bizservice",".*"), "g_service", "KVM", "g_service", ".*"), "g_environment", "prod", "g_environment", ".*")
+  #-----------------------------------------------------------------------------
+  - record: record_kvm_host_vm_memory_used
+    expr: label_replace(label_replace(label_replace(kvm_host_vm_memory_used, "g_bizservice", "KVM", "g_bizservice",".*"), "g_service", "KVM", "g_service", ".*"), "g_environment", "prod", "g_environment", ".*")
+  #-----------------------------------------------------------------------------
+  - record: record_kvm_vm_cpu_core_max
+    expr: label_replace(label_replace(label_replace(kvm_vm_cpu_core_max, "g_bizservice", "KVM", "g_bizservice",".*"), "g_service", "KVM", "g_service", ".*"), "g_environment", "prod", "g_environment", ".*")
+  #-----------------------------------------------------------------------------
+  - record: record_kvm_vm_memory_max
+    expr: label_replace(label_replace(label_replace(kvm_vm_memory_max, "g_bizservice", "KVM", "g_bizservice",".*"), "g_service", "KVM", "g_service", ".*"), "g_environment", "prod", "g_environment", ".*")
+  #-----------------------------------------------------------------------------
+  - record: record_kvm_vm_storage_max
+    expr: label_replace(label_replace(label_replace(kvm_vm_storage_max, "g_bizservice", "KVM", "g_bizservice",".*"), "g_service", "KVM", "g_service", ".*"), "g_environment", "prod", "g_environment", ".*")
+#==============================================================================#
+#-EOF-

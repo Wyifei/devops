@@ -1,0 +1,14 @@
+#nmp_format_ver:1.0.0
+---
+groups:
+#===============================================================================
+- name: hw_ecs_instance
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_hw_sys_ecs_cpu_util
+    expr: huaweicloud_sys_ecs_cpu_util{instance_id="1590c9ae-6825-4fea-bcf8-0584a33c8234"}
+    labels:
+      instance_name: FSO_SMS_Centos76
+#===============================================================================
+#-EOF-
+

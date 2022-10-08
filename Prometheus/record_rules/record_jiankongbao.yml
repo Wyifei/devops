@@ -1,0 +1,39 @@
+#nmp_format_ver:1.0.0
+---
+groups:
+#==============================================================================#
+- name: group_jiankongbao_task_summary
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_jkb_http_summary_task_status
+    expr: label_replace(label_replace(label_replace(jiankongbao_http_summary_task_status, "g_bizservice", "$1", "name_app", "^(.+)$"), "g_service", "$1", "name_app", "^(.+)$"), "g_environment", "$1", "name_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_jkb_http_summary_last_check_timestamp
+    expr: label_replace(label_replace(label_replace(jiankongbao_http_summary_last_check_timestamp, "g_bizservice", "$1", "name_app", "^(.+)$"), "g_service", "$1", "name_app", "^(.+)$"), "g_environment", "$1", "name_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_jkb_http_summary_last_check_resp_result
+    expr: label_replace(label_replace(label_replace(jiankongbao_http_summary_last_check_resp_result, "g_bizservice", "$1", "name_app", "^(.+)$"), "g_service", "$1", "name_app", "^(.+)$"), "g_environment", "$1", "name_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_jkb_http_summary_last_check_resp_time_seconds
+    expr: label_replace(label_replace(label_replace(jiankongbao_http_summary_last_check_resp_time_seconds, "g_bizservice", "$1", "name_app", "^(.+)$"), "g_service", "$1", "name_app", "^(.+)$"), "g_environment", "$1", "name_env", "^(.+)$")
+#==============================================================================#
+- name: group_jiankongbao_task_monitor
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_jkb_http_monitor_last_check_timestamp
+    expr: label_replace(label_replace(label_replace(jiankongbao_http_monitor_last_check_timestamp, "g_bizservice", "$1", "name_app", "^(.+)$"), "g_service", "$1", "name_app", "^(.+)$"), "g_environment", "$1", "name_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_jkb_http_monitor_last_check_resp_result
+    expr: label_replace(label_replace(label_replace(jiankongbao_http_monitor_last_check_resp_result, "g_bizservice", "$1", "name_app", "^(.+)$"), "g_service", "$1", "name_app", "^(.+)$"), "g_environment", "$1", "name_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_jkb_http_monitor_last_check_resp_time_seconds
+    expr: label_replace(label_replace(label_replace(jiankongbao_http_monitor_last_check_resp_time_seconds, "g_bizservice", "$1", "name_app", "^(.+)$"), "g_service", "$1", "name_app", "^(.+)$"), "g_environment", "$1", "name_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_jkb_http_monitor_last_check_monitor_status
+    expr: label_replace(label_replace(label_replace(jiankongbao_http_monitor_last_check_monitor_status, "g_bizservice", "$1", "name_app", "^(.+)$"), "g_service", "$1", "name_app", "^(.+)$"), "g_environment", "$1", "name_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_jkb_http_monitor_last_check_resp_duration_seconds
+    expr: label_replace(label_replace(label_replace(jiankongbao_http_monitor_last_check_resp_duration_seconds, "g_bizservice", "$1", "name_app", "^(.+)$"), "g_service", "$1", "name_app", "^(.+)$"), "g_environment", "$1", "name_env", "^(.+)$")
+#==============================================================================#
+#-EOF-
+

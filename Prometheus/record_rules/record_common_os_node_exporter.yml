@@ -1,0 +1,40 @@
+#nmp_format_ver:1.0.0
+---
+groups:
+#===============================================================================
+- name: group_os_cpu_node
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_os_cpu_node_cpu_num
+    expr: count without (cpu) (count without (mode) (node_cpu_seconds_total))
+  #-----------------------------------------------------------------------------
+  - record: record_os_cpu_node_cpu_utilisation_2min
+    expr: 100.0 * ( 1 - avg without (cpu, mode) ( rate (node_cpu_seconds_total{mode="idle"}[2m]) ) )
+  #-----------------------------------------------------------------------------
+  - record: record_os_cpu_node_cpu_utilisation_5min
+    expr: 100.0 * ( 1 - avg without (cpu, mode) ( rate (node_cpu_seconds_total{mode="idle"}[5m]) ) )
+  #-----------------------------------------------------------------------------
+  - record: record_os_cpu_node_cpu_utilisation_15min
+    expr: 100.0 * ( 1 - avg without (cpu, mode) ( rate (node_cpu_seconds_total{mode="idle"}[15m]) ) )
+#===============================================================================
+- name: group_os_mem_node
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_os_mem_node_mem_utilisation
+    expr: 100.0 * ( 1 - ( node_memory_MemAvailable_bytes or ( node_memory_Buffers_bytes + node_memory_Cached_bytes + node_memory_MemFree_bytes + node_memory_Slab_bytes ) ) /  node_memory_MemTotal_bytes )
+#===============================================================================
+- name: group_os_net_node
+  rules:
+  #-----------------------------------------------------------------------------
+#===============================================================================
+- name: group_os_hdd_node
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_os_hdd_node_hdd_partition_count
+    expr: count ( node_filesystem_size_bytes ) without (device, mountpoint, fstype)
+  #-----------------------------------------------------------------------------
+  - record: record_os_hdd_node_hdd_partition_usage
+    expr: 100.0 * ( 1 - node_filesystem_avail_bytes / node_filesystem_size_bytes )
+#===============================================================================
+#-EOF-
+

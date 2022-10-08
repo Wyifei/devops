@@ -1,0 +1,45 @@
+#nmp_format_ver:1.0.0
+---
+groups:
+#===============================================================================
+- name: alert_acs_cons_server
+  rules:
+  #-----------------------------------------------------------------------------
+  - alert: ACS_CONS_Server_CPU_Usage_High
+    expr: record_os_cpu_wmi_cpu_utilisation_2min{g_bizservice="ACS",g_environment="cons"} > 90
+    for: 15m
+    labels:
+      g_app_managers: "Wang, Yifei(CN); Xia, Leping (CN)"
+      g_duty_team: "it-ops-ams"
+      g_severity: "level 5"
+      g_generator: "prometheus"
+    annotations:
+      summary: "{{ $labels.g_bizservice }}@{{ $labels.g_environment }}: Windows Server CPU Usage High ({{ $labels.instance }} | {{ $value }}%)"
+      description: "ACS Server CPU Usage is more than 90%\n  VALUE = {{ $value }}%\n  LABELS: {{ $labels }}"
+  #-----------------------------------------------------------------------------
+  - alert: ACS_CONS_Server_Memory_Usage_High
+    expr: record_os_mem_wmi_mem_utilisation{g_bizservice="ACS",g_environment="cons"} > 90
+    for: 15m
+    labels:
+      g_app_managers: "Wang, Yifei(CN); Xia, Leping (CN)"
+      g_duty_team: "it-ops-ams"
+      g_severity: "level 5"
+      g_generator: "prometheus"
+    annotations:
+      summary: "{{ $labels.g_bizservice }}@{{ $labels.g_environment }}: Windows Server Memory Usage High ({{ $labels.instance }} | {{ $value }}%)"
+      description: "ACS Server Memory Usage is more than 90%\n  VALUE = {{ $value }}%\n  LABELS: {{ $labels }}"
+  #-----------------------------------------------------------------------------
+  - alert: ACS_CONS_Server_Disk_Space_Usage_High
+    expr: record_os_hdd_wmi_hdd_partition_usage{g_bizservice="ACS",g_environment="cons",volume !~"HarddiskVolume.+"}> 95
+    for: 15m
+    labels:
+      g_app_managers: "Wang, Yifei(CN); Xia, Leping (CN)"
+      g_duty_team: "it-ops-ams"
+      g_severity: "level 5"
+      g_generator: "prometheus"
+    annotations:
+      summary: "{{ $labels.g_bizservice }}@{{ $labels.g_environment }}: Windows Server Disk Space Usage High ({{ $labels.instance }} | {{ $labels.volume }} | {{ $value }}%)"
+      description: "ACS Server Disk Space Usage is more than 95% on Drive {{ $labels.volume }}\n  VALUE = {{ $value }}%\n  LABELS: {{ $labels }}"
+#===============================================================================
+#-EOF-
+

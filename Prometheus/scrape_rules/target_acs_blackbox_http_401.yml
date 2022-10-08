@@ -1,0 +1,20 @@
+#nmp_format_ver:1.0.0
+---
+- targets:
+  - http://acsprod.fs86.vwf.vwfs-ad
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'ACS'
+    g_service: ''
+    c_zone: 'central'
+
+- targets:
+  - http://acscons.fs86.vwf.vwfs-ad
+  labels:
+    g_environment: 'cons'
+    g_bizservice: 'ACS'
+    g_service: ''
+    c_zone: 'central'
+
+#-EOF-
+

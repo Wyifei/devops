@@ -1,0 +1,22 @@
+#nmp_format_ver:1.0.0
+---
+- targets:
+  - https://106.39.122.110/dist_pc/
+  #- https://223.71.41.211/dist_pc/
+  labels:
+    g_environment: 'prod'
+    g_bizservice: 'SMT'
+    g_service: ''
+    c_zone: 'central'
+
+- targets:
+  - https://106.39.122.109/dist_pc/
+  #- https://114.255.167.244/dist_pc/
+  labels:
+    g_environment: 'cons'
+    g_bizservice: 'SMT'
+    g_service: ''
+    c_zone: 'central'
+
+#-EOF-
+

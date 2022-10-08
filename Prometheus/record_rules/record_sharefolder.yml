@@ -1,0 +1,54 @@
+#nmp_format_ver:1.0.0
+---
+groups:
+#==============================================================================#
+- name: group_storage_sharefolder
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_count
+    expr: label_replace(label_replace(label_replace(remote_filesystem_share_count, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_read_rate
+    expr: label_replace(label_replace(label_replace(remote_filesystem_read_rate, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_write_rate
+    expr: label_replace(label_replace(label_replace(remote_filesystem_write_rate, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_state
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_state, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_size_total_bytes
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_size_total_bytes, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_size_available_bytes
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_size_available_bytes, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_inode_total
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_inode_total, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_inode_used
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_inode_used, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_size_used_ratio
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_size_used_ratio, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_state_daily
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_state_daily, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_size_total_bytes_daily
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_size_total_bytes_daily, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_size_available_bytes_daily
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_size_available_bytes_daily, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_inode_total_daily
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_inode_total_daily, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_inode_used_daily
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_inode_used_daily, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+  #-----------------------------------------------------------------------------
+  - record: record_sharefolder_size_used_ratio_daily
+    expr: label_replace(label_replace(label_replace(remote_filesystem_sharefolder_size_used_ratio_daily, "g_bizservice", "Share_Folder", "g_bizservice",".*"), "g_service", "$1", "comment_app", "^(.+)$"), "g_environment", "$1", "comment_env", "^(.+)$")
+#==============================================================================#
+#-EOF-
+

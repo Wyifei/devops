@@ -1,0 +1,40 @@
+#nmp_format_ver:1.0.0
+---
+groups:
+#==============================================================================#
+- name: group_os_cpu_wmi
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_os_cpu_wmi_cpu_num
+    expr: count without (core) (count without (mode) (wmi_cpu_time_total))
+  #-----------------------------------------------------------------------------
+  - record: record_os_cpu_wmi_cpu_utilisation_2min
+    expr: 100.0 * ( 1 - avg without (core, mode) ( irate ( wmi_cpu_time_total{mode="idle"}[2m] ) ) )
+  #-----------------------------------------------------------------------------
+  - record: record_os_cpu_wmi_cpu_utilisation_5min
+    expr: 100.0 * ( 1 - avg without (core, mode) ( irate ( wmi_cpu_time_total{mode="idle"}[5m] ) ) )
+  #-----------------------------------------------------------------------------
+  - record: record_os_cpu_wmi_cpu_utilisation_15min
+    expr: 100.0 * ( 1 - avg without (core, mode) ( irate ( wmi_cpu_time_total{mode="idle"}[15m] ) ) )
+#==============================================================================#
+- name: group_os_mem_wmi
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_os_mem_wmi_mem_utilisation
+    expr: 100.0 * ( 1 - wmi_os_physical_memory_free_bytes / wmi_cs_physical_memory_bytes )
+#==============================================================================#
+- name: group_os_net_wmi
+  rules:
+  #-----------------------------------------------------------------------------
+#==============================================================================#
+- name: group_os_hdd_wmi
+  rules:
+  #-----------------------------------------------------------------------------
+  - record: record_os_hdd_wmi_hdd_partition_count
+    expr: count ( wmi_logical_disk_free_bytes ) without (volume)
+  #-----------------------------------------------------------------------------
+  - record: record_os_hdd_wmi_hdd_partition_usage
+    expr: 100.0 * ( 1 - wmi_logical_disk_free_bytes / wmi_logical_disk_size_bytes )
+#==============================================================================#
+#-EOF-
+
