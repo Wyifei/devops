@@ -11,7 +11,7 @@
     - Continuous improvement initiatives.
 
   - **Automation**  
-    - Infrastructure as Code (IaC).
+    - Infrastructure as Code (IaaC).
     - Pipelines: Build, Deploy, Release, Automated Testing, Backup, Restore, etc.
     - Scripting for automation tasks.
 
