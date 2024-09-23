@@ -20,4 +20,4 @@
 
   - **China (CN) Special**  
     - Operational tasks related to the region.
-    - Software Architecture Enhancement.
+    - Software architecture enhancement.
