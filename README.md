@@ -5,7 +5,7 @@
 - **2019-2022: Volkswagen Finance - Application Management**
   - Cloud / Kubernetes
 
-- **2022.11 - Present: MBGC - Site Reliability Architect (Engineer)**
+- **2022.11 - Present: MBGC - CIAM Site Reliability Architect (Engineer)**
   - **Architect**  
     - Design highly available, scalable, secure, and cost-efficient architectures in AWS Cloud.
     - Continuous improvement initiatives.
@@ -15,8 +15,9 @@
     - Pipelines: Build, Deploy, Release, Automated Testing, Backup, Restore, etc.
     - Scripting for automation tasks.
 
-  - **Tools**  
-    - Monitoring, Logging, Security Scanning, CI/CD.
+  - **Platform/Tools**  
+    - Kubernetes,CI/CD
+    - Database, Cache, Monitoring, Logging, Security Scanning.
 
   - **China (CN) Special**  
     - Operational tasks related to the region.
@@ -24,7 +25,7 @@
 
 ## Todo
 
--  **Foss (Free and Open Source Software)**
+-  **Foss (Free and Open Source Software) replacement**
 
 -  **One CIAM**
 
