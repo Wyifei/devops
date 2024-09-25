@@ -3,7 +3,7 @@
 - **2012-2019: CDK (ADP) - DMS System Support / Release Manager**
   
 - **2019-2022: Volkswagen Finance - Application Management**
-  - Cloud / Kubernetes
+  - Devops / Cloud / Kubernetes
 
 - **2022.11 - Present: MBGC - CIAM Site Reliability Architect (Engineer)**
   - **Architect**  
